@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
         // 获取组件
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        
+        direction = Direction.Down;
     }
 
     // Update is called once per frame
@@ -77,6 +79,11 @@ public class PlayerController : MonoBehaviour
         // 更改动画状态机参数 (参数名 参数值)
         animator.SetBool("IsRunning", isRunning);
         animator.SetFloat("Direction", (float)direction);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("Attack");
+        }
     }
 
     private void FixedUpdate()
