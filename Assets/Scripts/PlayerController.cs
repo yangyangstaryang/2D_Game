@@ -13,21 +13,21 @@ public class PlayerController : MonoBehaviour
         Left,
         Right
     }  
-    
-    bool isRunning;
     public Animator animator;
     public float speed = 1.0f;
-    Direction direction;
-    SpriteRenderer spriteRenderer;
-    Rigidbody2D rigidBody;
-    Vector2 movement;
+    
+    private bool isRunning;
+    private Direction direction;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    private Vector2 movement;
     
     // Start is called before the first frame update
     void Start()
     {
         // 获取组件
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rigidBody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -83,6 +83,6 @@ public class PlayerController : MonoBehaviour
     {
         // 物理移动 方向x位移
         // 位移=速度x时间
-        rigidBody.MovePosition(rigidBody.position + movement*speed*Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
     }
 }
