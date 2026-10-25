@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
             isRunning = true;
             direction = Direction.Left;
             //transform.localScale = new Vector3(-1, 1, 1);
-            spriteRenderer.flipX = true;
+            //spriteRenderer.flipX = true;
             movement = new Vector2(-1, 0);
         }
         
@@ -70,13 +70,13 @@ public class PlayerController : MonoBehaviour
             isRunning = true;
             direction = Direction.Right;
             //transform.localScale = new Vector3(1, 1, 1);
-            spriteRenderer.flipX = false;
+            //spriteRenderer.flipX = false;
             movement = new Vector2(1, 0);
         }
         
         // 更改动画状态机参数 (参数名 参数值)
         animator.SetBool("IsRunning", isRunning);
-        animator.SetInteger("Direction", (int)direction);
+        animator.SetFloat("Direction", (float)direction);
     }
 
     private void FixedUpdate()

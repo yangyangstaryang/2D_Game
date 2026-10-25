@@ -47,29 +47,31 @@ public class Slime : MonoBehaviour
         isRunning = movement.sqrMagnitude > 0;
         
         // 判断方向
-        var angle = GetAngle(Vector2.up, movement);
-        if ((angle >= 0 && angle < 45) || (angle >= 315 && angle <= 360))
-        {
-            direction = Direction.Up;
-        }
-        else if (angle >= 45 && angle <= 135)
-        {
-            direction = Direction.Right;
-            spriteRenderer.flipX = false;
-        }
-        else if (angle >= 135 && angle <= 225)
-        {
-            direction = Direction.Down;
-        }
-        else
-        {
-            direction = Direction.Left;
-            spriteRenderer.flipX = true;
-        }
+        // var angle = GetAngle(Vector2.up, movement);
+        // if ((angle >= 0 && angle < 45) || (angle >= 315 && angle <= 360))
+        // {
+        //     direction = Direction.Up;
+        // }
+        // else if (angle >= 45 && angle <= 135)
+        // {
+        //     direction = Direction.Right;
+        //     spriteRenderer.flipX = false;
+        // }
+        // else if (angle >= 135 && angle <= 225)
+        // {
+        //     direction = Direction.Down;
+        // }
+        // else
+        // {
+        //     direction = Direction.Left;
+        //     spriteRenderer.flipX = true;
+        // }
         
         // 更改动画状态机参数 (参数名 参数值)
         animator.SetBool("IsRunning", isRunning);
-        animator.SetInteger("Direction", (int)direction);
+        // animator.SetInteger("Direction", (int)direction);
+        animator.SetFloat("MoveX", movement.x);
+        animator.SetFloat("MoveY", movement.y);
     }
     
     private void FixedUpdate()
