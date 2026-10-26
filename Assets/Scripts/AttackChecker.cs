@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class AttackChecker : MonoBehaviour
 {
+    private PlayerController player;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GetComponentInParent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -21,7 +23,8 @@ public class AttackChecker : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Slime>())
         {
-            Debug.Log(collision.gameObject.name);
+            Slime slime = collision.gameObject.GetComponent<Slime>();
+            slime.TakeDamage(1, player.transform);
         }
     }
 }

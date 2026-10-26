@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
     }
 
+    // 攻击动画进入事件（开启对应方向碰撞检测）
     public void AtkAnimEnterEvent(Direction dir)
     {
         switch (dir)
@@ -113,6 +114,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 攻击动画退出事件（关闭所有碰撞检测）
     public void AtkAnimExitEvent()
     {
         upAtk.SetActive(false);

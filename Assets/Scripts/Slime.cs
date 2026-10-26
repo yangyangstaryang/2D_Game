@@ -12,6 +12,8 @@ public class Slime : MonoBehaviour
         Right
     }  
     public float speed = 1.0f;
+    public int forceRange = 5;
+    public float knockBackTime = 0.2f;
     
     private bool isRunning;
     private Animator animator;
@@ -19,6 +21,9 @@ public class Slime : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Vector2 movement;
+    private int hp;
+    bool isKnockedBack;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -26,6 +31,8 @@ public class Slime : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+
+        hp = 3;
 
         StartCoroutine(SetRandomMovement()); 
     }
@@ -78,7 +85,11 @@ public class Slime : MonoBehaviour
     {
         // 物理移动 方向x位移
         // 位移=速度x时间
-        rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
+        if (!isKnockedBack)
+        {
+            rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
+        }
+        
     }
 
     IEnumerator SetRandomMovement()
@@ -98,5 +109,41 @@ public class Slime : MonoBehaviour
             return Vector2.Angle(from, to);
         else
             return 360 - Vector2.Angle(from, to);
+    }
+
+    public void TakeDamage(int damage, Transform attacker)
+    {
+        KnockBack(attacker);
+        hp -= damage;
+        Debug.Log($"{gameObject.name} HP: {hp}");
+        CheckHp();
+    }
+
+    void CheckHp()
+    {
+        if (hp <= 0)
+        {
+            animator.SetTrigger("Dead");
+        }
+    }
+    
+    public void DestroySelf()
+    {
+        Destroy(gameObject);   // 删除自身
+    }
+
+    void KnockBack(Transform attacker)
+    {
+        isKnockedBack = true;
+        // (自己的位置 - 攻击者的位置) 归一化 获得攻击方向 * 攻击力度
+        var force = (transform.position - attacker.position).normalized * forceRange;
+        rb.AddForce(force, ForceMode2D.Impulse);     // 给物体添加一个冲击力 
+        StartCoroutine(KnockBackTime());
+    }
+
+    IEnumerator KnockBackTime()
+    {
+        yield return new WaitForSeconds(knockBackTime);
+        isKnockedBack = false;
     }
 }
