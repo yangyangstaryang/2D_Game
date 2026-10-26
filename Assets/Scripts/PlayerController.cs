@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    enum Direction
+    public enum Direction
     {
         Up,
         Down,
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Vector2 movement;
+    public GameObject upAtk, downAtk, leftAtk, rightAtk;
     
     // Start is called before the first frame update
     void Start()
@@ -91,5 +92,32 @@ public class PlayerController : MonoBehaviour
         // 物理移动 方向x位移
         // 位移=速度x时间
         rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
+    }
+
+    public void AtkAnimEnterEvent(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.Up:
+                upAtk.SetActive(true);
+                break;  
+            case Direction.Down:
+                downAtk.SetActive(true);
+                break;
+            case Direction.Left:
+                leftAtk.SetActive(true);
+                break;
+            case Direction.Right:
+                rightAtk.SetActive(true);
+                break;
+        }
+    }
+
+    public void AtkAnimExitEvent()
+    {
+        upAtk.SetActive(false);
+        downAtk.SetActive(false);
+        leftAtk.SetActive(false);
+        rightAtk.SetActive(false);
     }
 }
