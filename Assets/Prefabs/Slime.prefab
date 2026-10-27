@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5233263181911918523}
   - component: {fileID: 7603131476390689104}
   - component: {fileID: 2627864649468057490}
+  - component: {fileID: 4765019084822291733}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -121,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2357648f298fd42ab2b2010e0b6aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  speed: 1
   forceRange: 3
   knockBackTime: 0.2
 --- !u!50 &7603131476390689104
@@ -183,6 +184,41 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000025664698, y: 0.027910594}
-  m_Size: {x: 0.23578775, y: 0.09832966}
+  m_Offset: {x: 0.0032786594, y: 0.13603424}
+  m_Size: {x: 0.8452196, y: 0.37137386}
   m_Direction: 1
+--- !u!58 &4765019084822291733
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059629318921256166}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.00080662966, y: 0.30283266}
+  serializedVersion: 2
+  m_Radius: 0.44744152

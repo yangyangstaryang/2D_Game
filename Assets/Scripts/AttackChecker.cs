@@ -19,7 +19,16 @@ public class AttackChecker : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     if (collision.gameObject.GetComponent<Slime>())
+    //     {
+    //         Slime slime = collision.gameObject.GetComponent<Slime>();
+    //         slime.TakeDamage(1, player.transform);
+    //     }
+    // }
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Slime>())
         {
