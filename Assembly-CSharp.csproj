@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\DestroySelf.cs" />
     <Compile Include="Assets\Scripts\AttackChecker.cs" />
     <Compile Include="Assets\Scripts\Slime.cs" />
     <Reference Include="UnityEngine">

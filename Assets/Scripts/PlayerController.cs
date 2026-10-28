@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     public float dashTime;
     public float dashResumeTime;
     public float attackCD;
+    public int ghostNum = 5;
+    public GameObject ghostPrefab;
+    public float ghostIntervalTime = 0.1f;
     
     private bool isRunning;
     private Direction direction;
@@ -155,6 +158,7 @@ public class PlayerController : MonoBehaviour
     {
         isDash = true;
         isDashOver = false;
+        StartCoroutine(GenerateGhost());
         rb.AddForce(movement.normalized * dashForce,  ForceMode2D.Impulse);
         StartCoroutine(OnDashEnd());
     }
@@ -165,6 +169,21 @@ public class PlayerController : MonoBehaviour
         isDash = false;
         yield return new WaitForSeconds(dashResumeTime);
         isDashOver = true; 
+    }
+
+    IEnumerator GenerateGhost()
+    {
+        for (int i = 0; i < ghostNum; i++)
+        {
+            GameObject ghost = Instantiate(ghostPrefab, transform.position, Quaternion.identity);
+            SpriteRenderer ghostSr = ghost.GetComponent<SpriteRenderer>();
+            ghostSr.sprite = spriteRenderer.sprite;
+            if (direction == Direction.Left)
+            {
+                ghostSr.flipX = true;
+            }
+            yield return new WaitForSeconds(ghostIntervalTime);
+        }
     }
 
     private void Attack()
