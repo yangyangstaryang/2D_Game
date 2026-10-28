@@ -14,6 +14,7 @@ public class Slime : MonoBehaviour
     public float speed = 1.0f;
     public int forceRange = 5;
     public float knockBackTime = 0.2f;
+    public GameObject damageNum;
     
     private bool isRunning;
     private Animator animator;
@@ -115,6 +116,10 @@ public class Slime : MonoBehaviour
     {
         KnockBack(attacker);
         hp -= damage;
+        GameObject numObj = Instantiate(damageNum, transform.position, Quaternion.identity);
+        DamageNum num =  numObj.GetComponentInChildren<DamageNum>();
+        num.SetNum(damage);
+        
         Debug.Log($"{gameObject.name} HP: {hp}");
         CheckHp();
     }
