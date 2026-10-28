@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float dashTime;
     public float dashResumeTime;
     public float attackCD;
-    public int ghostNum = 5;
+    // public int ghostNum = 5;
     public GameObject ghostPrefab;
     public float ghostIntervalTime = 0.1f;
     
@@ -173,7 +173,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator GenerateGhost()
     {
-        for (int i = 0; i < ghostNum; i++)
+        // for (int i = 0; i < ghostNum; i++)
+        while(isDash)
         {
             GameObject ghost = Instantiate(ghostPrefab, transform.position, Quaternion.identity);
             SpriteRenderer ghostSr = ghost.GetComponent<SpriteRenderer>();

@@ -7986,6 +7986,9 @@ MonoBehaviour:
   dashTime: 0.5
   dashResumeTime: 3
   attackCD: 1
+  ghostNum: 6
+  ghostPrefab: {fileID: 8297901984543580853, guid: 9b9db120ccccba345a996f6c64585a6d, type: 3}
+  ghostIntervalTime: 0.05
 --- !u!212 &1247598646
 SpriteRenderer:
   m_ObjectHideFlags: 0

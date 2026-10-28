@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7206275703602080487}
   - component: {fileID: 6462227194027298799}
   - component: {fileID: 6393453259038634870}
+  - component: {fileID: 6556977354171546510}
   m_Layer: 0
   m_Name: GhostPrefab
   m_TagString: Untagged
@@ -99,3 +100,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayTime: 0.5
   sr: {fileID: 6462227194027298799}
+--- !u!95 &6556977354171546510
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8297901984543580853}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c6cbeb68ffe357241af7bd0d7ca3a462, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

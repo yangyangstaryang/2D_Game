@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroySelf : MonoBehaviour
+public class Ghost : MonoBehaviour
 {
     public float delayTime = 0.1f;
     private float destroyTime;
@@ -11,6 +11,7 @@ public class DestroySelf : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
         StartCoroutine(DestroySelfCoroutine());
         destroyTime = Time.time + delayTime;
     }
@@ -18,8 +19,8 @@ public class DestroySelf : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float a = (destroyTime - Time.time) / delayTime;
-        sr.color = new Color(1, 1, 1, a);
+        // float a = (destroyTime - Time.time) / delayTime;
+        // sr.color = new Color(1, 1, 1, a);
     }
 
     IEnumerator DestroySelfCoroutine()
