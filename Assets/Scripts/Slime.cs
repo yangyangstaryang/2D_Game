@@ -15,6 +15,8 @@ public class Slime : MonoBehaviour
     public int forceRange = 5;
     public float knockBackTime = 0.2f;
     public GameObject damageNum;
+    public HPBar hpBar;
+    public int fullHP = 3;
     
     private bool isRunning;
     private Animator animator;
@@ -22,18 +24,18 @@ public class Slime : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Vector2 movement;
-    private int hp;
+    private int currentHp;
     bool isKnockedBack;
     
     
     // Start is called before the first frame update
-    void Start()
+    void Start()  
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
 
-        hp = 3;
+        currentHp = fullHP;
 
         StartCoroutine(SetRandomMovement()); 
     }
@@ -115,18 +117,23 @@ public class Slime : MonoBehaviour
     public void TakeDamage(int damage, Transform attacker)
     {
         KnockBack(attacker);
-        hp -= damage;
+        currentHp -= damage;
+        
+        // 显示伤害数字
         GameObject numObj = Instantiate(damageNum, transform.position, Quaternion.identity);
         DamageNum num =  numObj.GetComponentInChildren<DamageNum>();
         num.SetNum(damage);
         
-        Debug.Log($"{gameObject.name} HP: {hp}");
+        // 更新血条
+        hpBar.ShowHPBar((float)currentHp / fullHP);
+        
+        Debug.Log($"{gameObject.name} HP: {currentHp}");
         CheckHp();
     }
 
     void CheckHp()
     {
-        if (hp <= 0)
+        if (currentHp <= 0)
         {
             animator.SetTrigger("Dead");
         }
