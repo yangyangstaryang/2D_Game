@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -42,7 +43,11 @@ public class PlayerController : MonoBehaviour
     public GameObject ghostPrefab;
     public float ghostIntervalTime = 0.1f;
     
+    [Header("Gate")]
     public string targetGate;
+    public bool inGate;
+    public string targetScene;
+    public GameObject KeyE;
 
     private void Awake()
     {
@@ -90,6 +95,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(1) && isDashOver)
         {
             Dash();
+        }
+
+        if (inGate && Input.GetKeyDown(KeyCode.E))
+        {
+            SceneManager.LoadScene(targetScene);
         }
     }
 

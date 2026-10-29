@@ -22,7 +22,7 @@ public class Gate : MonoBehaviour
             // 判断 玩家目标点就是自己 那就将玩家移动到自己的入口上 
             if (player.GetComponent<PlayerController>().targetGate == selfName)
             {
-                player.transform.position = entry.transform.position;
+                player.transform.position = /*entry.*/transform.position;
             }
         }
             
@@ -36,8 +36,27 @@ public class Gate : MonoBehaviour
             // 告诉玩家你的目标点是什么
             PlayerController player = collision.gameObject.GetComponent<PlayerController>();
             player.targetGate = targetGate;
+            // 告诉玩家进入了检测范围
+            player.inGate = true;
+            // 开启按钮显示
+            player.KeyE.SetActive(true);
+            // 告诉玩家要加载哪个场景
+            player.targetScene = targetScene;
             // 加载场景
-            SceneManager.LoadScene(targetScene);
+            // SceneManager.LoadScene(targetScene);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        // 如果是玩家进入检测范围
+        if (collision.gameObject.GetComponent<PlayerController>())
+        {
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            player.targetGate = targetGate;
+            // 告诉玩家进入了检测范围
+            player.inGate = false;
+            player.KeyE.SetActive(false);
         }
     }
 }
