@@ -2893,7 +2893,7 @@ Tilemap:
       - {fileID: -1901684719, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
       - {fileID: -1009631741, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
       - {fileID: -1985771381, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 6, y: 4, z: 0}
@@ -2971,7 +2971,7 @@ Tilemap:
       - {fileID: 366129438, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
       - {fileID: -28802189, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
       - {fileID: 489871144, guid: 0db8fc4d2df620c4786a54fec0473f7a, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 8, y: 5, z: 0}
@@ -8213,6 +8213,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 54359495410224608, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
+      propertyPath: selfName
+      value: Scene1-Gate1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54359495410224608, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
+      propertyPath: targetGate
+      value: Scene2-Gate1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54359495410224608, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
+      propertyPath: targetScene
+      value: Scene2
+      objectReference: {fileID: 0}
     - target: {fileID: 841533243055246673, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.58
@@ -8256,22 +8268,6 @@ PrefabInstance:
     - target: {fileID: 3002744442620737752, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
       propertyPath: m_Name
       value: Gate
-      objectReference: {fileID: 0}
-    - target: {fileID: 6089358776628602107, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
-      propertyPath: m_Size.x
-      value: 2.694882
-      objectReference: {fileID: 0}
-    - target: {fileID: 6089358776628602107, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
-      propertyPath: m_Size.y
-      value: 0.94902706
-      objectReference: {fileID: 0}
-    - target: {fileID: 6089358776628602107, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.13380694
-      objectReference: {fileID: 0}
-    - target: {fileID: 6089358776628602107, guid: a16dc640fa8308344b8c37a6709c0804, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.2803564
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
