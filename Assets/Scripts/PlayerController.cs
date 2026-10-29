@@ -176,4 +176,11 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackCD);
         isAttackOver = true;
     }
+
+    public void Transfer(string targetName)
+    {
+        GameObject target =  GameObject.Find(targetName);
+        if(target == null) return;  // 熔断
+        transform.position = target.transform.position;
+    }
 }
