@@ -6,6 +6,8 @@ public class HPBar : MonoBehaviour
 {
     public Transform hpBar;
     public float showTime = 1f;
+
+    private Coroutine coroutine;
     
     // Start is called before the first frame update
     void Start()
@@ -22,10 +24,14 @@ public class HPBar : MonoBehaviour
 
     public void ShowHPBar(float hpPercent)
     {
-        StopCoroutine(SetShowTime());
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        // StopAllCoroutines();
         gameObject.SetActive(true);
         hpBar.localScale = new Vector3(hpPercent, 1, 1);
-        StartCoroutine(SetShowTime());
+        coroutine =  StartCoroutine(SetShowTime());
     }
 
     IEnumerator SetShowTime()

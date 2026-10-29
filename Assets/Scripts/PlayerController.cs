@@ -13,24 +13,34 @@ public class PlayerController : MonoBehaviour
         Left,
         Right
     }  
-    public Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    
+    [Header("Move")]
+    private bool isRunning;
+    private Direction direction;
     public float speed = 1.0f;
-    public GameObject upAtk, downAtk, leftAtk, rightAtk;
+    public Animator animator;
+    private Vector2 movement;
+    
+    [Header("Attack")]
+    public GameObject upAtk;
+    public GameObject downAtk;
+    public GameObject leftAtk;
+    public GameObject rightAtk;
+    public float attackCD;
+    private bool isAttackOver;
+    
+    [Header("Dash")]
     public float dashForce;
     public float dashTime;
     public float dashResumeTime;
-    public float attackCD;
+    bool isDash, isDashOver;
+    
+    [Header("Ghost")]
     // public int ghostNum = 5;
     public GameObject ghostPrefab;
     public float ghostIntervalTime = 0.1f;
-    
-    private bool isRunning;
-    private Direction direction;
-    private SpriteRenderer spriteRenderer;
-    private Rigidbody2D rb;
-    private Vector2 movement;
-    bool isDash, isDashOver;
-    private bool isAttackOver;
     
     // Start is called before the first frame update
     void Start()
