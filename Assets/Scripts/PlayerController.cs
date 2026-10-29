@@ -41,7 +41,12 @@ public class PlayerController : MonoBehaviour
     // public int ghostNum = 5;
     public GameObject ghostPrefab;
     public float ghostIntervalTime = 0.1f;
-    
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,44 +64,6 @@ public class PlayerController : MonoBehaviour
     {
         isRunning = false;
         movement = Vector2.zero;
-        
-        // 获取按键
-        // if (Input.GetKey(KeyCode.W))
-        // {
-        //     // 更改坐标位置
-        //     //transform.position += new Vector3(0, speed, 0);
-        //     isRunning = true;
-        //     direction = Direction.Up;
-        //     movement = new Vector2(0, 1);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.A))
-        // {
-        //     //transform.position -= new Vector3(speed, 0, 0);
-        //     isRunning = true;
-        //     direction = Direction.Left;
-        //     //transform.localScale = new Vector3(-1, 1, 1);
-        //     //spriteRenderer.flipX = true;
-        //     movement = new Vector2(-1, 0);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.S))
-        // {
-        //     //transform.position -= new Vector3(0, speed, 0);
-        //     isRunning = true;
-        //     direction = Direction.Down;
-        //     movement = new Vector2(0, -1);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.D))
-        // {
-        //     //transform.position += new Vector3(speed, 0, 0);
-        //     isRunning = true;
-        //     direction = Direction.Right;
-        //     //transform.localScale = new Vector3(1, 1, 1);
-        //     //spriteRenderer.flipX = false;
-        //     movement = new Vector2(1, 0);
-        // }
         
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
