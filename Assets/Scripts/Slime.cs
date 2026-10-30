@@ -40,13 +40,18 @@ public class Slime : MonoBehaviour
 
         currentHp = fullHP;
 
-        // StartCoroutine(SetRandomMovement()); 
+        StartCoroutine(SetRandomMovement()); 
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Follow();
+        if (InViewField())
+        {
+            Follow();
+        }
+        
         // 随机生成movement 按一定时间间隔 计时器
         // Debug.Log(Random.Range(-1, 2));
         // 不要在Update里调用协程!!!
@@ -85,7 +90,7 @@ public class Slime : MonoBehaviour
     float GetAngle(Vector2 from, Vector2 to)
     {
         var cross = Vector3.Cross(from, to);
-        if (cross.z < 0)
+        if (cross.z > 0)
             return Vector2.Angle(from, to);
         else
             return 360 - Vector2.Angle(from, to);
@@ -148,18 +153,38 @@ public class Slime : MonoBehaviour
     public Transform viewCenter;
     [Range(0, 3)]public float viewDistance = 3;
     [Range(0, 360)]public float viewAngle = 90;
-    private void OnDrawGizmosSelected()
+    
+    private void OnDrawGizmos()
     {
-        Handles.color = Color.yellow;
+        if (InViewField()) Handles.color = Color.green;
+        else Handles.color = Color.yellow;
         Handles.DrawWireArc(viewCenter.position, Vector3.back, Vector3.up, 360, viewDistance);
         
         Gizmos.color = Color.red;
-        float leftAngle = -viewAngle / 2 + 90;
-        float rightAngle = viewAngle / 2 + 90;
+        float rot = GetAngle(Vector2.up, movement);
+        float leftAngle = -viewAngle / 2 + 90 + rot;
+        float rightAngle = viewAngle / 2 + 90 + rot;
         
         Vector3 left = new Vector3(Mathf.Cos(leftAngle * Mathf.Deg2Rad), Mathf.Sin(leftAngle * Mathf.Deg2Rad), 0);
         Vector3 right = new Vector3(Mathf.Cos(rightAngle * Mathf.Deg2Rad), Mathf.Sin(rightAngle * Mathf.Deg2Rad), 0);
         Gizmos.DrawLine(viewCenter.position, viewCenter.position + left.normalized * viewDistance);
         Gizmos.DrawLine(viewCenter.position, viewCenter.position + right.normalized * viewDistance);
     }
+
+    // 判断玩家是否在视线范围内
+    bool InViewField()
+    {
+        if(!Application.isPlaying) return false;
+        Vector3 playerPos = PlayerController.Instance.transform.position;
+        if (Vector3.Distance(playerPos, viewCenter.position) < viewDistance)
+        {
+            // 求夹角
+            Vector3 dir = playerPos - viewCenter.position;
+            float angle = Vector2.Angle(movement, dir);
+            if (angle < viewAngle / 2)
+                return true;
+        }
+        return false;
+    }
+    
 }
