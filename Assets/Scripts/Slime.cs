@@ -29,6 +29,7 @@ public class Slime : MonoBehaviour
     private Vector2 movement;
     private int currentHp;
     bool isKnockedBack;
+    IEnumerator autoMove;
     
     
     // Start is called before the first frame update
@@ -37,20 +38,17 @@ public class Slime : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-
         currentHp = fullHP;
-
-        StartCoroutine(SetRandomMovement()); 
+        // 类型匹配
+        autoMove = SetRandomMovement();
+        StartCoroutine(autoMove); 
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (InViewField())
-        {
-            Follow();
-        }
+        StateMachine();
         
         // 随机生成movement 按一定时间间隔 计时器
         // Debug.Log(Random.Range(-1, 2));
@@ -186,5 +184,45 @@ public class Slime : MonoBehaviour
         }
         return false;
     }
+
+    enum State
+    {
+        Idle,
+        Patrol,
+        Trace,
+        Return,
+        Dead
+    }
     
+    State state = State.Patrol;
+
+    // 状态机只管切换状态
+    // 具体逻辑要在对应的状态里执行
+    void StateMachine()
+    {
+        switch (state)
+        {
+            case State.Idle:
+                break;
+            case State.Patrol:
+                if (InViewField())
+                {
+                    StopCoroutine(autoMove);
+                    state = State.Trace;
+                }
+                break;
+            case State.Trace:
+                Follow();
+                if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) > 5)
+                {
+                    StartCoroutine(autoMove);
+                    state = State.Patrol;
+                }
+                break;
+            case State.Return:
+                break;
+            case State.Dead:
+                break;
+        }
+    }
 }
