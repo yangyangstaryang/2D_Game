@@ -152,7 +152,7 @@ public class Slime : MonoBehaviour
     [Range(0, 3)]public float viewDistance = 3;
     [Range(0, 360)]public float viewAngle = 90;
     
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (InViewField()) Handles.color = Color.green;
         else Handles.color = Color.yellow;
@@ -254,6 +254,17 @@ public class Slime : MonoBehaviour
         isAttackOver = true;
     }
 
+    public GameObject atkChecker;
+    public void OnAttackEnter()
+    {
+        atkChecker.SetActive(true);
+    }
+
+    public void OnAttackExit()
+    {
+        atkChecker.SetActive(false);
+    }
+    
     public void OnAttackOver()
     {
         StartCoroutine(autoMove);

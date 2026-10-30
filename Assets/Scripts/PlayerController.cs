@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
         direction = Direction.Down;
         isDashOver = true;
         isAttackOver = true;
+        
+        // 初始化
+        currentHp = fullHP;
     }
 
     // Update is called once per frame
@@ -117,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         // 物理移动 方向x位移
         // 位移=速度x时间
-        if (!isDash)
+        if (!isDash && !isKnockedBack)
         {
             // rb.MovePosition(rb.position + movement*speed*Time.fixedDeltaTime);
             rb.velocity  = movement.normalized * speed;
@@ -198,4 +201,53 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackCD);
         isAttackOver = true;
     }
+
+    private bool isKnockedBack;
+    public float forceRange = 5;
+    float knockBackTime = 0.2f;
+    
+    void KnockBack(Transform attacker)
+    {
+        isKnockedBack = true;
+        // (自己的位置 - 攻击者的位置) 归一化 获得攻击方向 * 攻击力度
+        var force = (transform.position - attacker.position).normalized * forceRange;
+        rb.AddForce(force, ForceMode2D.Impulse);     // 给物体添加一个冲击力 
+        StartCoroutine(KnockBackTime());
+    }
+
+    IEnumerator KnockBackTime()
+    {
+        yield return new WaitForSeconds(knockBackTime);
+        isKnockedBack = false;
+    }
+
+    public int fullHP = 100;
+    int currentHp;
+    public GameObject damageNum;
+    
+    public void TakeDamage(int damage, Transform attacker)
+    {
+        KnockBack(attacker);
+        StartCoroutine(ChangeColor());
+        currentHp -= damage;
+        
+        // 显示伤害数字
+        GameObject numObj = Instantiate(damageNum, transform.position, Quaternion.identity);
+        DamageNum num =  numObj.GetComponentInChildren<DamageNum>();
+        num.SetNum(damage);
+        
+        // 更新血条
+        // hpBar.ShowHPBar((float)currentHp / fullHP);
+        
+        Debug.Log($"{gameObject.name} HP: {currentHp}");
+        // CheckHp();
+    }
+
+    IEnumerator ChangeColor()
+    {
+        spriteRenderer.color  = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color  = Color.white;
+    }
+    
 }
