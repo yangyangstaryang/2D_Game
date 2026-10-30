@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Slime : MonoBehaviour
 {
@@ -135,8 +138,28 @@ public class Slime : MonoBehaviour
 
     void Follow()
     {
+        // 获取面向玩家的方向 = 玩家位置 - 自身位置
+        // 单例模式用途：1、保证实例在全局中只存在一个   2、能全局调用到实例
         // 不能让方向的长度影响我们的速度 所以需要“归一化”
         movement = (PlayerController.Instance.transform.position - transform.position).normalized;
     }
-    
+
+    [Header("view")] 
+    public Transform viewCenter;
+    [Range(0, 3)]public float viewDistance = 3;
+    [Range(0, 360)]public float viewAngle = 90;
+    private void OnDrawGizmosSelected()
+    {
+        Handles.color = Color.yellow;
+        Handles.DrawWireArc(viewCenter.position, Vector3.back, Vector3.up, 360, viewDistance);
+        
+        Gizmos.color = Color.red;
+        float leftAngle = -viewAngle / 2 + 90;
+        float rightAngle = viewAngle / 2 + 90;
+        
+        Vector3 left = new Vector3(Mathf.Cos(leftAngle * Mathf.Deg2Rad), Mathf.Sin(leftAngle * Mathf.Deg2Rad), 0);
+        Vector3 right = new Vector3(Mathf.Cos(rightAngle * Mathf.Deg2Rad), Mathf.Sin(rightAngle * Mathf.Deg2Rad), 0);
+        Gizmos.DrawLine(viewCenter.position, viewCenter.position + left.normalized * viewDistance);
+        Gizmos.DrawLine(viewCenter.position, viewCenter.position + right.normalized * viewDistance);
+    }
 }
