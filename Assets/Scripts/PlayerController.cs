@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public int fullHP = 100;
-    int currentHp;
+    public int currentHp;
     public GameObject damageNum;
     
     public void TakeDamage(int damage, Transform attacker)
