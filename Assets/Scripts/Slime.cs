@@ -185,21 +185,24 @@ public class Slime : MonoBehaviour
         return false;
     }
 
-    enum State
+    public enum State
     {
         Idle,
         Patrol,
         Trace,
         Return,
+        Attack,
         Dead
     }
     
-    State state = State.Patrol;
+    public State state = State.Patrol;
 
     // 状态机只管切换状态
     // 具体逻辑要在对应的状态里执行
     void StateMachine()
     {
+        Vector3 playerPos = PlayerController.Instance.transform.position;
+        
         switch (state)
         {
             case State.Idle:
@@ -213,16 +216,47 @@ public class Slime : MonoBehaviour
                 break;
             case State.Trace:
                 Follow();
-                if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) > 5)
+                if (Vector2.Distance(transform.position, playerPos) > 5)
                 {
                     StartCoroutine(autoMove);
                     state = State.Patrol;
                 }
+
+                if (Vector2.Distance(transform.position, playerPos) < 1)
+                {
+                    state = State.Attack;
+                }
                 break;
             case State.Return:
+                break;
+            case State.Attack:
+                if(isAttackOver)
+                    Attack();
                 break;
             case State.Dead:
                 break;
         }
+    }
+
+
+    private bool isAttackOver = true;
+    private float attackCD = 2;
+    private void Attack()
+    {
+        isAttackOver = false;
+        animator.SetTrigger("Attack");
+        StartCoroutine(AttackCD());
+    }
+
+    IEnumerator AttackCD()
+    {
+        yield return new WaitForSeconds(attackCD);
+        isAttackOver = true;
+    }
+
+    public void OnAttackOver()
+    {
+        StartCoroutine(autoMove);
+        state = State.Patrol;
     }
 }
