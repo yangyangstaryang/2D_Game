@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +6,29 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    static UIController instance;
+    
+    public static UIController Instance { get { return instance; } }
+    
     public Image img_health;
     public Image img_stamina;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        img_health.fillAmount = 0.6f;
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetHpFillAmount(float fillAmount)
     {
-        
+        img_health.fillAmount = fillAmount;
+    }
+    
+    public void SetStaminaFillAmount(float fillAmount)
+    {
+        img_stamina.fillAmount = fillAmount;
     }
 }

@@ -18,14 +18,10 @@ public class GameManager : MonoBehaviour
     {
         // 将本实例存入公共区域
         // unity单例写法
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
+        if (instance == null)
             instance = this;
-        }
+        else
+            Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
     }
 

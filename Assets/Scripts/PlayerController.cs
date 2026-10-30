@@ -53,6 +53,13 @@ public class PlayerController : MonoBehaviour
     public string targetScene;
     public GameObject KeyE;
 
+    [Header("Stamina")]
+    public float fullStamina = 100f;
+    public float staminaRegenSpeed = 20f;    // 每秒回复多少点
+    public float staminaRegenDelay = 1.5f;   // 消耗后等几秒才开始回复
+    float currentStamina;
+    float staminaRegenTimer;                 // 计时器：距离上次消耗过了多久
+
     private void Awake()
     {
         // 将本实例存入公共区域
@@ -77,13 +84,26 @@ public class PlayerController : MonoBehaviour
         
         // 初始化
         currentHp = fullHP;
+        currentStamina = 0f;                 // 开局精力为空
+        staminaRegenTimer = 0f;
+        if (UIController.Instance != null)   // 立刻刷一次UI，不要等下一帧
+            UIController.Instance.SetStaminaFillAmount(0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        isRunning = false;
-        movement = Vector2.zero;
+        // 精力回复：先过延迟期，再按速度回复
+        if (currentStamina < fullStamina)
+        {
+            staminaRegenTimer += Time.deltaTime;
+            if (staminaRegenTimer >= staminaRegenDelay)
+            {
+                currentStamina = Mathf.Min(currentStamina + staminaRegenSpeed * Time.deltaTime, fullStamina);
+                if (UIController.Instance != null)
+                    UIController.Instance.SetStaminaFillAmount(currentStamina / fullStamina);
+            }
+        }
         
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
@@ -158,11 +178,25 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
+        if (!CheckStamina(30)) return;
         isDash = true;
         isDashOver = false;
         StartCoroutine(GenerateGhost());
         rb.AddForce(movement.normalized * dashForce,  ForceMode2D.Impulse);
         StartCoroutine(OnDashEnd());
+    }
+
+    bool CheckStamina(float expend)
+    {
+        // 精力值不足
+        if(currentStamina < expend)
+            return false;
+        // 精力值够
+        currentStamina -= expend;
+        staminaRegenTimer = 0f;   // 重置延迟计时，从消耗这一刻重新算
+        if (UIController.Instance != null)
+            UIController.Instance.SetStaminaFillAmount(currentStamina / fullStamina);
+        return true;
     }
 
     IEnumerator OnDashEnd()
@@ -191,6 +225,7 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
+        if(!CheckStamina(20))  return;
         isAttackOver = false;
         animator.SetTrigger("Attack");
         StartCoroutine(AttackCD());
@@ -222,7 +257,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public int fullHP = 100;
-    public int currentHp;
+    int currentHp;
     public GameObject damageNum;
     
     public void TakeDamage(int damage, Transform attacker)
@@ -230,6 +265,7 @@ public class PlayerController : MonoBehaviour
         KnockBack(attacker);
         StartCoroutine(ChangeColor());
         currentHp -= damage;
+        UIController.Instance.SetHpFillAmount((float)currentHp / fullHP);
         
         // 显示伤害数字
         GameObject numObj = Instantiate(damageNum, transform.position, Quaternion.identity);
