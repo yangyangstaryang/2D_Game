@@ -97,6 +97,7 @@ public class Slime : MonoBehaviour
     public void TakeDamage(int damage, Transform attacker)
     {
         KnockBack(attacker);
+        StartCoroutine(ChangeColor());
         currentHp -= damage;
         
         // 显示伤害数字
@@ -267,7 +268,13 @@ public class Slime : MonoBehaviour
     
     public void OnAttackOver()
     {
-        StartCoroutine(autoMove);
-        state = State.Patrol;
+        state = State.Trace;
+    }
+    
+    IEnumerator ChangeColor()
+    {
+        spriteRenderer.color  = Color.red;
+        yield return new WaitForSeconds(0.3f);
+        spriteRenderer.color  = Color.white;
     }
 }
