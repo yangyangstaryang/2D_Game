@@ -37,45 +37,19 @@ public class Slime : MonoBehaviour
 
         currentHp = fullHP;
 
-        StartCoroutine(SetRandomMovement()); 
+        // StartCoroutine(SetRandomMovement()); 
     }
 
     // Update is called once per frame
     void Update()
     {
+        Follow();
         // 随机生成movement 按一定时间间隔 计时器
         // Debug.Log(Random.Range(-1, 2));
         // 不要在Update里调用协程!!!
         
         // 判断是否在移动
-        // movement.sqrMagnitude = movement.x*movement.x + movement.y*movement.y;
-        // if (movement.sqrMagnitude > 0)
-        // {
-        //     isRunning = true;
-        // }
-        // else isRunning = false;
         isRunning = movement.sqrMagnitude > 0;
-        
-        // 判断方向
-        // var angle = GetAngle(Vector2.up, movement);
-        // if ((angle >= 0 && angle < 45) || (angle >= 315 && angle <= 360))
-        // {
-        //     direction = Direction.Up;
-        // }
-        // else if (angle >= 45 && angle <= 135)
-        // {
-        //     direction = Direction.Right;
-        //     spriteRenderer.flipX = false;
-        // }
-        // else if (angle >= 135 && angle <= 225)
-        // {
-        //     direction = Direction.Down;
-        // }
-        // else
-        // {
-        //     direction = Direction.Left;
-        //     spriteRenderer.flipX = true;
-        // }
         
         // 更改动画状态机参数 (参数名 参数值)
         animator.SetBool("IsRunning", isRunning);
@@ -158,4 +132,11 @@ public class Slime : MonoBehaviour
         yield return new WaitForSeconds(knockBackTime);
         isKnockedBack = false;
     }
+
+    void Follow()
+    {
+        // 不能让方向的长度影响我们的速度 所以需要“归一化”
+        movement = (PlayerController.Instance.transform.position - transform.position).normalized;
+    }
+    
 }

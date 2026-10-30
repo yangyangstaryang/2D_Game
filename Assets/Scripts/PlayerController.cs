@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
         Left,
         Right
     }  
+    
+    static PlayerController instance;
+    public static PlayerController Instance { get { return instance; } }
+    
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     
@@ -51,6 +55,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // 将本实例存入公共区域
+        // unity单例写法
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
