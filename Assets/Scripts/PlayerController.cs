@@ -41,6 +41,14 @@ public class PlayerController : MonoBehaviour
     public float dashTime;
     public float dashResumeTime;
     bool isDash, isDashOver;
+    float dashCooldownEndTime;    // 冲刺解锁的时刻（给冷却UI读取）
+    float attackCooldownEndTime;  // 攻击解锁的时刻（给冷却UI读取）
+
+    // ---- 供冷却UI查询：剩余冷却时间 / 总冷却时长 ----
+    public float DashCooldownRemaining { get { return Mathf.Max(0f, dashCooldownEndTime - Time.time); } }
+    public float DashCooldownTotal { get { return dashTime + dashResumeTime; } }
+    public float AttackCooldownRemaining { get { return Mathf.Max(0f, attackCooldownEndTime - Time.time); } }
+    public float AttackCooldownTotal { get { return attackCD; } }
     
     [Header("Ghost")]
     // public int ghostNum = 5;
@@ -174,6 +182,7 @@ public class PlayerController : MonoBehaviour
         if (!CheckStamina(30)) return;
         isDash = true;
         isDashOver = false;
+        dashCooldownEndTime = Time.time + dashTime + dashResumeTime;
         StartCoroutine(GenerateGhost());
         rb.AddForce(movement.normalized * dashForce,  ForceMode2D.Impulse);
         StartCoroutine(OnDashEnd());
@@ -219,6 +228,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!CheckStamina(20))  return;
         isAttackOver = false;
+        attackCooldownEndTime = Time.time + attackCD;
         animator.SetTrigger("Attack");
         StartCoroutine(AttackCD());
     }

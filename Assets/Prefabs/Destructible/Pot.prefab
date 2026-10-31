@@ -170,3 +170,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breakParticlePrefab: {fileID: 7706296437953691232, guid: 8a48c30f6beeef845a4220c241495ac2, type: 3}
+  CoinPrefab: {fileID: 1128172125607726818, guid: 1273dff0e3729714888f1811069b443c, type: 3}
