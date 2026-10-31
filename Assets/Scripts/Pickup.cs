@@ -6,6 +6,14 @@ using Random = UnityEngine.Random;
 
 public class PickUp : MonoBehaviour
 {
+    public enum DropType
+    {
+        Coin,
+        Blood
+    }
+    
+    public DropType type;
+    
     Rigidbody2D rb;
     private Vector2 moveDir;
     public float pickupRadius = 5f;
@@ -50,6 +58,15 @@ public class PickUp : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            switch (type)
+            {
+                case DropType.Coin:
+                    Debug.Log("捡到了硬币");
+                    break;
+                case DropType.Blood:
+                    Debug.Log("捡到了血药");
+                    break;
+            }
             Destroy(gameObject);
         }
     }
