@@ -16,7 +16,7 @@ public class Destructible : MonoBehaviour
         {
             Instantiate(breakParticlePrefab, transform.position, Quaternion.identity);
             float probability = Random.Range(0, 1f);
-            if (probability < 0.5f)
+            if (probability < 0.8f)
             {
                 Instantiate(CoinPrefab, transform.position, Quaternion.identity);
             }
