@@ -82,9 +82,9 @@ public class PlayerController : MonoBehaviour
         
         // 初始化
         currentHp = fullHP;
-        currentStamina = 0f;                 // 开局精力为空
+        currentStamina = fullStamina;                 // 开局精力为空
         if (UIController.Instance != null)   // 立刻刷一次UI，不要等下一帧
-            UIController.Instance.SetStaminaFillAmount(0f);
+            UIController.Instance.SetStaminaFillAmount(1f);
     }
 
     // Update is called once per frame

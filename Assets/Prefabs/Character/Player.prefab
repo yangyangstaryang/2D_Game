@@ -119,7 +119,7 @@ MonoBehaviour:
   targetScene: 
   KeyE: {fileID: 100308024286435831}
   fullStamina: 100
-  staminaRegenSpeed: 12
+  staminaRegenSpeed: 10
   forceRange: 5
   fullHP: 100
   damageNum: {fileID: 2907010001709118813, guid: f1e5850b79c1b2046b1231b602e3be1d, type: 3}
