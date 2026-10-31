@@ -56,9 +56,7 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina")]
     public float fullStamina = 100f;
     public float staminaRegenSpeed = 20f;    // 每秒回复多少点
-    public float staminaRegenDelay = 1.5f;   // 消耗后等几秒才开始回复
     float currentStamina;
-    float staminaRegenTimer;                 // 计时器：距离上次消耗过了多久
 
     private void Awake()
     {
@@ -85,7 +83,6 @@ public class PlayerController : MonoBehaviour
         // 初始化
         currentHp = fullHP;
         currentStamina = 0f;                 // 开局精力为空
-        staminaRegenTimer = 0f;
         if (UIController.Instance != null)   // 立刻刷一次UI，不要等下一帧
             UIController.Instance.SetStaminaFillAmount(0f);
     }
@@ -93,16 +90,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 精力回复：先过延迟期，再按速度回复
+        // 精力回复：没满就一直回，消耗后立刻开始，没有停顿
         if (currentStamina < fullStamina)
         {
-            staminaRegenTimer += Time.deltaTime;
-            if (staminaRegenTimer >= staminaRegenDelay)
-            {
-                currentStamina = Mathf.Min(currentStamina + staminaRegenSpeed * Time.deltaTime, fullStamina);
-                if (UIController.Instance != null)
-                    UIController.Instance.SetStaminaFillAmount(currentStamina / fullStamina);
-            }
+            currentStamina = Mathf.Min(currentStamina + staminaRegenSpeed * Time.deltaTime, fullStamina);
+            if (UIController.Instance != null)
+                UIController.Instance.SetStaminaFillAmount(currentStamina / fullStamina);
         }
         
         float inputX = Input.GetAxisRaw("Horizontal");
@@ -193,7 +186,6 @@ public class PlayerController : MonoBehaviour
             return false;
         // 精力值够
         currentStamina -= expend;
-        staminaRegenTimer = 0f;   // 重置延迟计时，从消耗这一刻重新算
         if (UIController.Instance != null)
             UIController.Instance.SetStaminaFillAmount(currentStamina / fullStamina);
         return true;
@@ -275,7 +267,7 @@ public class PlayerController : MonoBehaviour
         // 更新血条
         // hpBar.ShowHPBar((float)currentHp / fullHP);
         
-        Debug.Log($"{gameObject.name} HP: {currentHp}");
+        // Debug.Log($"{gameObject.name} HP: {currentHp}");
         // CheckHp();
     }
 

@@ -108,7 +108,7 @@ public class Slime : MonoBehaviour
         // 更新血条
         hpBar.ShowHPBar((float)currentHp / fullHP);
         
-        Debug.Log($"{gameObject.name} HP: {currentHp}");
+        // Debug.Log($"{gameObject.name} HP: {currentHp}");
         CheckHp();
     }
 
