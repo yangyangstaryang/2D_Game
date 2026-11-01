@@ -134,8 +134,44 @@ public class PlayerController : MonoBehaviour
 
         if (inGate && Input.GetKeyDown(KeyCode.E))
         {
-            SceneManager.LoadScene(targetScene);
+            LoadTargetScene();
         }
+    }
+
+    // 切场景：立刻清掉"在门里"的状态，避免到新场景后按 E 又弹回去
+    void LoadTargetScene()
+    {
+        if (string.IsNullOrEmpty(targetScene)) return;
+        inGate = false;
+        if (KeyE != null) KeyE.SetActive(false);
+        Fade.Instance.LoadSceneWithFade(targetScene);   // 淡出 → 切场景 → 淡入
+        // targetGate 先保留：新场景的 Gate.Start 要靠它定位玩家
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(ClearGateStateAfterArrival());
+    }
+
+    // 到达新场景后清理传送状态。等一帧是因为 Gate.Start 要先读取 targetGate 来定位玩家
+    IEnumerator ClearGateStateAfterArrival()
+    {
+        yield return null;
+        inGate = false;
+        targetGate = null;
+        targetScene = null;
+        if (KeyE != null) KeyE.SetActive(false);
+        if (rb != null) rb.velocity = Vector2.zero;   // 传送后不要带着旧速度继续飘
     }
 
     private void FixedUpdate()
@@ -317,12 +353,28 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = Vector3.zero;
         currentHp = fullHP;
-        UIController.Instance.SetHpFillAmount(1);
+        currentStamina = fullStamina;
+        if (UIController.Instance != null)
+        {
+            UIController.Instance.SetHpFillAmount(1);
+            UIController.Instance.SetStaminaFillAmount(1);
+        }
+        if (rb != null) rb.velocity = Vector2.zero;
+
         collider2d.enabled = true;
         targetGate = null;
         targetScene = null;
+        inGate = false;
+        if (KeyE != null) KeyE.SetActive(false);
+
         isDead = false;
+        isAttackOver = true;
+        isDashOver = true;
+        isDash = false;
+        isKnockedBack = false;
+
         animator.SetBool("IsDead", isDead);
+        animator.SetBool("IsRunning", false);
         direction = Direction.Down;
     }
 }

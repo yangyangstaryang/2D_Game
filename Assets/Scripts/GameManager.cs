@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
+        // 预热淡入淡出遮罩：确保它存在且是透明的，避免开局第一帧被挡住
+        Fade.Instance.SetAlphaImmediate(0f);
+
         Instantiate(playerPrefab);
         
         cameraObj =  Instantiate(CameraPrefab);
@@ -42,26 +45,37 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            SceneManager.LoadScene("Scene2");
+            Fade.Instance.LoadSceneWithFade("Scene2");
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            SceneManager.LoadScene("Scene1");
+            Fade.Instance.LoadSceneWithFade("Scene1");
         }
     }
 
     public void ReStart()
     {
+        if (isReloading) return;      // 死亡瞬间可能被多只怪同时触发，只处理一次
+        isReloading = true;
         StartCoroutine(WaitToReload());
     }
 
+    bool isReloading;
+
     IEnumerator WaitToReload()
     {
-        yield return new WaitForSeconds(3);
-        // 读取最初的场景
+        yield return new WaitForSeconds(1);
+
+        yield return Fade.Instance.FadeOut();        // ① 先黑屏，等它完成
         SceneManager.LoadScene("Scene1");
-        // 重置玩家
-        PlayerController.Instance.ReSet();
+        yield return null;                           // ② 等场景真正切换完成，再重置玩家（否则是在旧场景里重置）
+
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.ReSet();
+
+        yield return Fade.Instance.FadeIn();         // ③ 再亮起来
+
+        isReloading = false;
     }
     
 }
