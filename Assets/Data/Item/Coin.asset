@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9d869a517045f44e9ec2cc71bc98687, type: 3}
+  m_Script: {fileID: 11500000, guid: b02c40a302c563c44baf1e8d34f2ba8c, type: 3}
   m_Name: Coin
   m_EditorClassIdentifier: 
-  ID: 1
-  itemName: Coin
-  icon: {fileID: 1305499222, guid: e50cfca3a02419345ac0865753def38b, type: 3}
-  prefab: {fileID: 1128172125607726818, guid: 1273dff0e3729714888f1811069b443c, type: 3}
-  canStack: 1
+  ID: 0
+  itemName: 
+  icon: {fileID: 0}
+  prefab: {fileID: 0}
+  canStack: 0

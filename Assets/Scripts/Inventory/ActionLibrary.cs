@@ -14,18 +14,18 @@ public class ActionLibrary : MonoBehaviour
         instance = this;
     }
 
-    public void InvokeAction(ItemDataSO data)
+    public void InvokeAction(ConsumableSO data)
     {
         switch (data.ID)
         {
-            case 2:
+            case 1:
                 BloodAction(data);
                 break;
         }
     }
 
-    public void BloodAction(ItemDataSO data)
+    public void BloodAction(ConsumableSO data)
     {
-        PlayerController.Instance.HealthHP(10);
+        PlayerController.Instance.HealthHP(data.health);
     }
 }

@@ -8,7 +8,7 @@ public class SlimeAttackChecker : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.Instance.TakeDamage(2, transform);
+            PlayerController.Instance.TakeDamage(10, transform);
         }
     }
 }

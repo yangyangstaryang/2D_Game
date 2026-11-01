@@ -19,22 +19,27 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SelectSlot(0);
+            slots[0].UseItem();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SelectSlot(1);
+            slots[1].UseItem();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SelectSlot(2);
+            slots[2].UseItem();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             SelectSlot(3);
+            slots[3].UseItem();
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             SelectSlot(4);
+            slots[4].UseItem();
         }
     }
 
