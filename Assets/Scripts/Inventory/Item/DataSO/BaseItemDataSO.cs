@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ItemDataSO : ScriptableObject
+public abstract class BaseItemDataSO : ScriptableObject
 {
     public int ID;
     public string itemName;

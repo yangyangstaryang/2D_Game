@@ -14,7 +14,7 @@ public class ActionLibrary : MonoBehaviour
         instance = this;
     }
 
-    public void InvokeAction(ConsumableSO data)
+    public void InvokeAction(ConsumableItemDataSO data)
     {
         switch (data.ID)
         {
@@ -24,7 +24,7 @@ public class ActionLibrary : MonoBehaviour
         }
     }
 
-    public void BloodAction(ConsumableSO data)
+    public void BloodAction(ConsumableItemDataSO data)
     {
         PlayerController.Instance.HealthHP(data.health);
     }

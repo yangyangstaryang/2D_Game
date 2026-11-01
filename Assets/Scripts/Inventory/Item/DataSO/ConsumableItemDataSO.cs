@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ConsumableData", menuName = "CreateItemData/ConsumableData")]
-public class ConsumableSO : ItemDataSO
+public class ConsumableItemDataSO : BaseItemDataSO
 {
     public int health;
 }

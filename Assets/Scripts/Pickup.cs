@@ -6,7 +6,9 @@ using Random = UnityEngine.Random;
 
 public class PickUp : MonoBehaviour
 {
-    public ItemDataSO data;
+    public BaseItem.ItemType itemType;
+    public BaseItemDataSO itemData;
+    public BaseItem item;
     
     Rigidbody2D rb;
     private Vector2 moveDir;
@@ -23,6 +25,18 @@ public class PickUp : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(DropAnim());
+
+        switch (itemType)
+        {
+            case BaseItem.ItemType.Consumable:
+                item = new ConsumableItem(itemData as ConsumableItemDataSO);
+                break;
+            case BaseItem.ItemType.Material:
+                item = new MaterialItem(itemData as MaterialItemDataSO);
+                break;
+            case BaseItem.ItemType.Equip:
+                break;
+        }
     }
 
     private void Update()
@@ -52,7 +66,7 @@ public class PickUp : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            InventorySystem.Instance.PickupItem(data);
+            InventorySystem.Instance.PickupItem(item);
             Destroy(gameObject);
         }
     }

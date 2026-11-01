@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +5,18 @@ using UnityEngine;
 public class InventorySystem : MonoBehaviour
 {
     static InventorySystem instance;
-    public static InventorySystem Instance { get { return instance; } }
+    public static InventorySystem Instance {  get { return instance; } }
+
     public List<Slot> slots;
+
+    public List<BaseItem> items;
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void Update()
@@ -45,28 +50,32 @@ public class InventorySystem : MonoBehaviour
 
     void SelectSlot(int index)
     {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if (i == index)
+        for (int i = 0; i < slots.Count; i++) {
+            if(i == index)
                 slots[i].IsSelected(true);
-            else
+            else 
                 slots[i].IsSelected(false);
         }
     }
 
-    public void PickupItem(ItemDataSO data)
+    public void PickupItem(BaseItem item)
     {
-        // 找到一个空的格子  或者 有相同物品的格子(可堆叠的情况下)
-        Slot emptySlot = FindEmptySlot(data);
-        // 将物品放入 堆叠的情况下就是数量+1
-        emptySlot.AddItem(data);
+        Slot emptySlot = FindEmptySlot(item);
+        if (item.type == BaseItem.ItemType.Consumable)
+        {
+            if (emptySlot.useAction == null)
+            {
+                emptySlot.useAction += ((ConsumableItem)item).Use;
+            }
+        }
+        emptySlot.AddItem(item.ID, item.icon, item.type);
     }
 
-    Slot FindEmptySlot(ItemDataSO data)
+    Slot FindEmptySlot(BaseItem item)
     {
-        foreach (Slot slot in slots)
+        foreach (var slot in slots)
         {
-            if(slot.IsEmpty || (data.canStack && slot.itemID == data.ID))
+            if (slot.IsEmpty || (item.canStack && slot.itemID == item.ID))
                 return slot;
         }
         return null;
