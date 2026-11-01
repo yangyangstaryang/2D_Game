@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class Slot : MonoBehaviour
     public bool IsEmpty { get { return amount == 0; } }
     private int amount=0;
     public int itemID;
+    private ItemDataSO data;
     
 
     public void IsSelected(bool isSelected)
@@ -20,8 +22,9 @@ public class Slot : MonoBehaviour
         selected.SetActive(isSelected);
     }
 
-    public void AddItem(ItemSO data)
+    public void AddItem(ItemDataSO data)
     {
+        this.data = data;
         itemID = data.ID;
         item.sprite = data.icon;
         item.SetNativeSize();
@@ -39,6 +42,14 @@ public class Slot : MonoBehaviour
         {
             item.color = Color.clear;
             itemID = -1;
+            data = null;
         }
+    }
+
+    public void UseItem()
+    {
+        if(IsEmpty) return;
+        
+        ActionLibrary.Instance.InvokeAction(data);
     }
 }

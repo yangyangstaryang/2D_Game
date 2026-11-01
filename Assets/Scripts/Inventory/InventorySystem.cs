@@ -49,7 +49,7 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void PickupItem(ItemSO data)
+    public void PickupItem(ItemDataSO data)
     {
         // 找到一个空的格子  或者 有相同物品的格子(可堆叠的情况下)
         Slot emptySlot = FindEmptySlot(data);
@@ -57,7 +57,7 @@ public class InventorySystem : MonoBehaviour
         emptySlot.AddItem(data);
     }
 
-    Slot FindEmptySlot(ItemSO data)
+    Slot FindEmptySlot(ItemDataSO data)
     {
         foreach (Slot slot in slots)
         {

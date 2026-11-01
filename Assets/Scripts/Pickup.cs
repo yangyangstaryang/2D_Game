@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class PickUp : MonoBehaviour
 {
-    public ItemSO data;
+    public ItemDataSO data;
     
     Rigidbody2D rb;
     private Vector2 moveDir;

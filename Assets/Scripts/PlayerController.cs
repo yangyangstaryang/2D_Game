@@ -287,5 +287,11 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         spriteRenderer.color  = Color.white;
     }
-    
+
+    public void HealthHP(int health)
+    {
+        currentHp += health;
+        if(currentHp>fullHP)
+            currentHp = fullHP;
+    }
 }
