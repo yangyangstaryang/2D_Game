@@ -61,6 +61,11 @@ public class InventorySystem : MonoBehaviour
     public void PickupItem(BaseItem item)
     {
         Slot emptySlot = FindEmptySlot(item);
+        if (emptySlot == null)
+        {
+            Debug.LogWarning("背包已满，无法拾取：" + item.itemName);
+            return;
+        }
         if (item.type == BaseItem.ItemType.Consumable)
         {
             if (emptySlot.useAction == null)
@@ -68,7 +73,7 @@ public class InventorySystem : MonoBehaviour
                 emptySlot.useAction += ((ConsumableItem)item).Use;
             }
         }
-        emptySlot.AddItem(item.ID, item.icon, item.type);
+        emptySlot.AddItem(item.ID, item.icon, item.type, item.prefab);
     }
 
     Slot FindEmptySlot(BaseItem item)

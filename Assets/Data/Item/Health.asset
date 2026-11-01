@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7ed85c264aacb46aeefc603f2e2333, type: 3}
   m_Name: Health
   m_EditorClassIdentifier: 
-  ID: 0
-  itemName: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
-  canStack: 0
-  health: 0
+  ID: 1
+  itemName: Health
+  icon: {fileID: 1844889718, guid: f9b81633d300f3e40be6ba9b815d6122, type: 3}
+  prefab: {fileID: 4755016206559764352, guid: 7941aa92e8b515249a5f6715d001b11a, type: 3}
+  canStack: 1
+  health: 10

@@ -98,6 +98,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isDead) return;
         // 精力回复：没满就一直回，消耗后立刻开始，没有停顿
         if (currentStamina < fullStamina)
         {
@@ -267,6 +268,7 @@ public class PlayerController : MonoBehaviour
         KnockBack(attacker);
         StartCoroutine(ChangeColor());
         currentHp -= damage;
+        CheckHp();
         UIController.Instance.SetHpFillAmount((float)currentHp / fullHP);
         
         // 显示伤害数字
@@ -294,5 +296,33 @@ public class PlayerController : MonoBehaviour
         if(currentHp>fullHP)
             currentHp = fullHP;
         UIController.Instance.SetHpFillAmount((float)currentHp / fullHP);
+    }
+
+    private bool isDead;
+    public Collider2D collider2d;
+    void CheckHp()
+    {
+        // 只有血量真的归零才算死亡（原来 isDead 写在了 if 外面，挨打一次就永久锁死）
+        if (currentHp <= 0)
+        {
+            isDead = true;
+            animator.SetBool("IsDead", isDead);
+            collider2d.enabled = false;
+            movement = Vector2.zero;
+            GameManager.Instance.ReStart();
+        }
+    }
+
+    public void ReSet()
+    {
+        transform.position = Vector3.zero;
+        currentHp = fullHP;
+        UIController.Instance.SetHpFillAmount(1);
+        collider2d.enabled = true;
+        targetGate = null;
+        targetScene = null;
+        isDead = false;
+        animator.SetBool("IsDead", isDead);
+        direction = Direction.Down;
     }
 }

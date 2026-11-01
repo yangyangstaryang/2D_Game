@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -16,7 +17,16 @@ public class UIController : MonoBehaviour
     [Header("Skill Cooldown")]
     public Sprite dashIconSprite;
     public Sprite swordIconSprite;
-
+    
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
+    
     void Start()
     {
         // 在 UICanvas 上挂冷却UI组件（右下角：冲刺、攻击两个圆形按钮）
@@ -28,14 +38,7 @@ public class UIController : MonoBehaviour
         cdUI.ApplyIcons();
     }
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-        DontDestroyOnLoad(gameObject);
-    }
+    
 
     public void SetHpFillAmount(float fillAmount)
     {

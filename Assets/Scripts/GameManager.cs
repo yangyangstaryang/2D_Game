@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     
     public GameObject playerPrefab;
     public GameObject CameraPrefab;
+
+    private GameObject cameraObj;
     
     private void Awake()
     {
@@ -28,10 +30,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-        GameObject playObj = Instantiate(playerPrefab);
+        Instantiate(playerPrefab);
         
-        GameObject cameraObj =  Instantiate(CameraPrefab);
-        cameraObj.GetComponentInChildren<CinemachineVirtualCamera>().Follow = playObj.transform;
+        cameraObj =  Instantiate(CameraPrefab);
+        cameraObj.GetComponentInChildren<CinemachineVirtualCamera>().Follow = PlayerController.Instance.transform;
         DontDestroyOnLoad(cameraObj);
     }
 
@@ -47,4 +49,19 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Scene1");
         }
     }
+
+    public void ReStart()
+    {
+        StartCoroutine(WaitToReload());
+    }
+
+    IEnumerator WaitToReload()
+    {
+        yield return new WaitForSeconds(3);
+        // 读取最初的场景
+        SceneManager.LoadScene("Scene1");
+        // 重置玩家
+        PlayerController.Instance.ReSet();
+    }
+    
 }

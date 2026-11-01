@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: {fileID: 5648222689267415757}
-  item: {fileID: 6592983802739745757}
+  item_img: {fileID: 6592983802739745757}
   amount_txt: {fileID: 3435921616771659425}
 --- !u!1 &8551993545247966843
 GameObject:
