@@ -13,4 +13,4 @@ public class MaterialItem : BaseItem
         prefab = data.prefab;
         canStack = data.canStack;
     }
-}
+}  

@@ -293,5 +293,6 @@ public class PlayerController : MonoBehaviour
         currentHp += health;
         if(currentHp>fullHP)
             currentHp = fullHP;
+        UIController.Instance.SetHpFillAmount((float)currentHp / fullHP);
     }
 }
