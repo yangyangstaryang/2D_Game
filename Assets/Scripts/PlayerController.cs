@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenSpeed = 20f;    // 每秒回复多少点
     float currentStamina;
 
+    public AudioClip attackAudio;
+
     private void Awake()
     {
         // 将本实例存入公共区域
@@ -264,6 +266,7 @@ public class PlayerController : MonoBehaviour
     private void Attack()
     {
         if(!CheckStamina(20))  return;
+        AudioManager.Instance.PlaySound(attackAudio);
         isAttackOver = false;
         attackCooldownEndTime = Time.time + attackCD;
         animator.SetTrigger("Attack");

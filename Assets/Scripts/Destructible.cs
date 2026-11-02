@@ -10,11 +10,14 @@ public class Destructible : MonoBehaviour
     public GameObject breakParticlePrefab;
     public GameObject CoinPrefab;
     public GameObject BloodPrefab;
+
+    public AudioClip breakSound;
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponentInChildren<AttackChecker>())
         {
+            AudioManager.Instance.PlaySound(breakSound);
             Instantiate(breakParticlePrefab, transform.position, Quaternion.identity);
             float probability = Random.Range(0, 1f);
             if (probability < 0.3f)
