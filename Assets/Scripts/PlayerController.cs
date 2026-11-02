@@ -100,7 +100,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isDead || Menu.Instance.isPause) return;
+        // Menu.Instance 可能为 null（场景里还没放菜单时），先判空再访问
+        if(isDead || (Menu.Instance != null && Menu.Instance.isPause)) return;
         // 精力回复：没满就一直回，消耗后立刻开始，没有停顿
         if (currentStamina < fullStamina)
         {
@@ -349,6 +350,43 @@ public class PlayerController : MonoBehaviour
             collider2d.enabled = false;
             movement = Vector2.zero;
             GameManager.Instance.ReStart();
+        }
+    }
+
+    /// <summary>
+    /// 读档恢复：把玩家放到存档位置，恢复血量，并清掉各种临时状态（死亡、传送、击退、冲刺）
+    /// </summary>
+    public void RestoreFromSave(int hp, Vector3 pos)
+    {
+        transform.position = pos;
+        currentHp = Mathf.Clamp(hp, 1, fullHP);
+        currentStamina = fullStamina;
+        direction = Direction.Down;      // 读档后统一朝下，和原来的 Load 行为一致
+
+        if (rb != null) rb.velocity = Vector2.zero;
+
+        isDead = false;
+        isKnockedBack = false;
+        isDash = false;
+        isDashOver = true;
+        isAttackOver = true;
+
+        inGate = false;
+        targetGate = null;
+        targetScene = null;
+        if (KeyE != null) KeyE.SetActive(false);
+
+        if (collider2d != null) collider2d.enabled = true;
+        if (animator != null)
+        {
+            animator.SetBool("IsDead", false);
+            animator.SetBool("IsRunning", false);
+        }
+
+        if (UIController.Instance != null)
+        {
+            UIController.Instance.SetHpFillAmount((float)currentHp / fullHP);
+            UIController.Instance.SetStaminaFillAmount(1f);
         }
     }
 

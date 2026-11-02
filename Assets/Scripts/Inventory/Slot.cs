@@ -15,6 +15,7 @@ public class Slot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     public bool IsEmpty { get { return amount == 0; } }
     int amount = 0;
+    public int Amount { get { return amount; } }
     public UnityAction useAction;
 
     public int itemID;
@@ -44,6 +45,41 @@ public class Slot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         item_img.color = Color.white;
         amount++;
         amount_txt.text = amount > 1 ? amount.ToString() : "";
+
+        if (InventorySystem.Instance != null) InventorySystem.Instance.SyncSnapshot();
+    }
+
+    /// <summary>按存档一次性还原这一格（数量直接指定，不累加）</summary>
+    public void RestoreItem(int ID, Sprite icon, BaseItem.ItemType type, GameObject prefab, int count)
+    {
+        if (item_img == null || amount_txt == null)
+        {
+            Debug.LogError("Slot 的 item_img / amount_txt 没有绑定，请检查 Slot 预制体", this);
+            return;
+        }
+
+        itemID = ID;
+        this.type = type;
+        this.prefab = prefab;
+
+        item_img.sprite = icon;
+        item_img.SetNativeSize();
+        item_img.color = Color.white;
+
+        amount = count;
+        amount_txt.text = amount > 1 ? amount.ToString() : "";
+    }
+
+    /// <summary>清空这一格（读档前先清一遍，避免和旧物品叠加）</summary>
+    public void ClearItem()
+    {
+        amount = 0;
+        itemID = -1;
+        type = BaseItem.ItemType.None;
+        prefab = null;
+        useAction = null;
+        if (amount_txt != null) amount_txt.text = "";
+        if (item_img != null) item_img.color = Color.clear;
     }
 
     public void RemoveItem() 
@@ -59,6 +95,8 @@ public class Slot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
             prefab = null;
             useAction = null;
         }
+
+        if (InventorySystem.Instance != null) InventorySystem.Instance.SyncSnapshot();
     }
 
     public void UseItem()
