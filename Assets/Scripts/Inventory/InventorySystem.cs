@@ -70,6 +70,9 @@ public class InventorySystem : MonoBehaviour
 
     public void PickupItem(BaseItem item)
     {
+        // 通关任务记账：拾取到金币就+1（即使背包满了也算拾取到）
+        if (QuestManager.Instance != null) QuestManager.Instance.OnItemPicked(item);
+
         Slot emptySlot = FindEmptySlot(item);
         if (emptySlot == null)
         {

@@ -45,7 +45,9 @@
     <Analyzer Include="D:\Applications\Editer\2022.3.62f3c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\ChineseFontBuilder.cs" />
     <Compile Include="Assets\Editor\CooldownUIBuilder.cs" />
+    <Compile Include="Assets\Editor\StartSceneBuilder.cs" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Applications\Editer\2022.3.62f3c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

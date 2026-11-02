@@ -13,11 +13,20 @@ public static class SaveSysten
 {
     const string FolderName = "SaveData";
 
+    /// <summary>默认存档文件名，开始页面和游戏内菜单共用</summary>
+    public const string DefaultFileName = "/SaveData.txt";
+
     /// <summary>
     /// 背包快照：跨场景保留。
     /// Scene2/Scene3 没有背包物体时，存档就用这份快照，物品不会丢。
     /// </summary>
     public static List<SlotSaveData> InventorySnapshot = new List<SlotSaveData>();
+
+    /// <summary>存档文件是否存在（开始页面用它决定「继续游戏」能不能点）</summary>
+    public static bool HasSave(string fileName)
+    {
+        return File.Exists(PathOf(fileName));
+    }
 
     /// <summary>拼出存档完整路径（fileName 传 "/SaveData.txt" 或 "SaveData.txt" 都行）</summary>
     public static string PathOf(string fileName)

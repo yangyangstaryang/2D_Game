@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -122,6 +124,10 @@ public class Slime : MonoBehaviour
     
     public void DestroySelf()
     {
+        // 死亡动画播完调用：只有真的被打死（血量归零）才计入通关任务
+        if (currentHp <= 0 && QuestManager.Instance != null)
+            QuestManager.Instance.OnSlimeKilled();
+
         Destroy(gameObject);   // 删除自身
     }
 
@@ -153,6 +159,8 @@ public class Slime : MonoBehaviour
     [Range(0, 3)]public float viewDistance = 3;
     [Range(0, 360)]public float viewAngle = 90;
     
+    // 打包时 UnityEditor 程序集不存在，画 Gizmos 的代码必须用 #if UNITY_EDITOR 包起来
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (InViewField()) Handles.color = Color.green;
@@ -169,6 +177,7 @@ public class Slime : MonoBehaviour
         Gizmos.DrawLine(viewCenter.position, viewCenter.position + left.normalized * viewDistance);
         Gizmos.DrawLine(viewCenter.position, viewCenter.position + right.normalized * viewDistance);
     }
+#endif
 
     // 判断玩家是否在视线范围内
     bool InViewField()

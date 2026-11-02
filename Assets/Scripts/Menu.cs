@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu : Singleton<Menu>
@@ -12,7 +10,8 @@ public class Menu : Singleton<Menu>
 
     public bool isPause;
 
-    const string SaveFile = "/SaveData.txt";
+    // 和开始页面共用同一个存档文件
+    const string SaveFile = SaveSysten.DefaultFileName;
 
     protected override void Awake()
     {
@@ -54,37 +53,18 @@ public class Menu : Singleton<Menu>
 
     void LoadData()
     {
+        if (!SaveSysten.HasSave(SaveFile))
+        {
+            Debug.LogWarning("[读档] 没有存档文件");
+            return;
+        }
+
         if (menuPanel != null) menuPanel.SetActive(false);
         Time.timeScale = 1;
         isPause = false;
 
-        // 读取存档文件
-        SaveDataSO saveData = SaveSysten.Load(SaveFile);
-        if (saveData == null) return;
-
-        // 用 Fade 来跑协程：Fade 是 DontDestroyOnLoad 的，
-        // 切场景时协程不会跟着 Menu 一起被销毁（否则会黑屏卡死）
-        Fade.Instance.StartCoroutine(LoadRoutine(saveData));
-    }
-
-    IEnumerator LoadRoutine(SaveDataSO saveData)
-    {
-        yield return Fade.Instance.FadeOut();          // ① 先黑屏
-
-        bool needSwitch = !string.IsNullOrEmpty(saveData.sceneName)
-                          && saveData.sceneName != SceneManager.GetActiveScene().name;
-
-        if (needSwitch)
-        {
-            SceneManager.LoadScene(saveData.sceneName); // ② 切到存档所在场景
-            yield return null;                          // ③ 关键：等新场景 Awake/Start 跑完
-                                                        //    Gate.Start 会先按传送点摆玩家，
-                                                        //    所以要等它跑完再覆盖成存档位置
-        }
-
-        saveData.Load();                                // ④ 恢复位置 / 血量 / 背包
-
-        yield return Fade.Instance.FadeIn();            // ⑤ 再亮起来
+        // 切场景 / 恢复数据统一交给 GameFlow（和开始页面的「继续游戏」是同一套逻辑）
+        GameFlow.ContinueGame(SaveFile);
     }
 
     void ChangeVolume(float value)
