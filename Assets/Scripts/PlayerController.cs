@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isDead) return;
+        if(isDead || Menu.Instance.isPause) return;
         // 精力回复：没满就一直回，消耗后立刻开始，没有停顿
         if (currentStamina < fullStamina)
         {
@@ -299,7 +299,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public int fullHP = 100;
-    int currentHp;
+    public int currentHp;
     public GameObject damageNum;
     
     public void TakeDamage(int damage, Transform attacker)
